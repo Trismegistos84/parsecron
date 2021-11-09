@@ -1,5 +1,5 @@
 #!/bin/sh
 
 mvn clean 
-mnv generate-sources
-mvn package
+mvn generate-sources
+mvn compile assembly:single

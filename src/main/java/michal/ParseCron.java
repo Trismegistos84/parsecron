@@ -18,19 +18,19 @@ public class ParseCron {
     public static void main(String[] args) {
         CronGrammarParser.LineContext line = CronParser.parse(args[0]);
 
-        var minutes = parse(line.minute_sequence(), 0, 59);
-        var hours = parse(line.hour_sequence(), 0, 23);
-        var daysOfMonth = parse(line.day_of_month_sequence(), 1, 31);
-        var months = parse(line.month_sequence(), 1, 12);
-        var daysOfWeek = parse(line.day_of_week_sequence(), 0, 6);
+        var minutes = parse(line.minute_sequence(), "minutes", 0, 59);
+        var hours = parse(line.hour_sequence(), "hours", 0, 23);
+        var daysOfMonth = parse(line.day_of_month_sequence(), "day of month", 1, 31);
+        var months = parse(line.month_sequence(), "month", 1, 12);
+        var daysOfWeek = parse(line.day_of_week_sequence(), "day of week", 0, 6);
         String cmd = line.command().getText();
 
         print(minutes, hours, daysOfMonth, months, daysOfWeek, cmd);
     }
 
-    private static List<Integer> parse(ParseTree tree, int min, int max) {
+    private static List<Integer> parse(ParseTree tree, String name, int min, int max) {
         ParseTreeWalker walker = new ParseTreeWalker();
-        var sequence = new CronGrammarSequenceParser(min, max);
+        var sequence = new CronGrammarSequenceParser(name, min, max);
         walker.walk(sequence, tree);
         return sequence.getSequence();
     }
